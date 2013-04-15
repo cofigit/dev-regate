@@ -6,6 +6,7 @@ public class Field {
 	private final static int NBBUOY=10;
 	
 	private Line start, finish;
+
 	private ArrayList<Buoy> buoyList = new ArrayList<Buoy>();
 
 	public Field() {
@@ -15,9 +16,16 @@ public class Field {
 	public ArrayList<Buoy> getBuoyList() {
 		return buoyList;
 	}
+	
+	public Line getStart() {
+		return start;
+	}
+
+	public Line getFinish() {
+		return finish;
+	}
 		
 	//Procedure definition parcours
-	
 	public void defineCourse() {
 		//Placer aleatoirement X bou�e
 		int buoyPosX;

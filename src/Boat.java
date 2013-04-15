@@ -8,8 +8,8 @@ public class Boat extends Racer {
 	private int cap;
 	private int speed;
 
-	public Boat(Field pField, String pName) {
-		super(pField, pName);
+	public Boat(Game pGame, Field pField, String pName) {
+		super(pGame, pField, pName);
 	}
 	
 	public int getCap() {
@@ -17,7 +17,11 @@ public class Boat extends Racer {
 	}
 
 	public void setCap(int cap) {
-		this.cap = cap;
+		if ( cap >= 0 && cap <= 360 ) {
+			this.cap = cap;
+		} else {
+			// TODO Alert cap value incorrect or change to correct cap
+		}
 	}
 
 	public int getSpeed() {

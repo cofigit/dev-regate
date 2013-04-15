@@ -19,6 +19,20 @@ public class Subject {
 		m_observers.remove(observer);	
 	}
 	
+	public void updateSubject() {
+		Boolean allReady = true;
+		Iterator<IObserver> it = m_observers.iterator();
+		while ( it.hasNext() ){
+			IObserver currentObserver = it.next();
+			if ( currentObserver.getState() != true ) {
+				allReady = false;
+			}
+		}
+		if ( allReady ) {
+			notifyObserver();
+		}
+	}
+	
 	public void notifyObserver() {
 		Iterator<IObserver> it = m_observers.iterator();
 		while ( it.hasNext() ){

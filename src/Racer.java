@@ -12,7 +12,7 @@ import java.util.Map;
  */
 
 public class Racer implements IObserver {
-
+	private Game game;
 	private Field field;
 	private HashMap <Buoy, Boolean> racerBuoyList = new HashMap<Buoy, Boolean>();
 	private Boolean ready = false;
@@ -21,9 +21,13 @@ public class Racer implements IObserver {
 	private int posX;
 	private int posY;
 	
-	public Racer ( Field pField, String pName ){
+	public Racer ( Game pGame, Field pField, String pName ){
+		this.game = pGame;
 		this.field = pField;
 		this.name = pName;
+		this.posX = field.getStart().getStartX();
+		// TODO Check next position available
+		this.posY = field.getStart().getStartY();
 		// init all buoys to false
 		Iterator<Buoy> it = this.field.getBuoyList().iterator();
 		while (it.hasNext()){
@@ -40,8 +44,7 @@ public class Racer implements IObserver {
 		while ( it.hasNext() ){
 			Map.Entry pairs = (Map.Entry) it.next();
 			Buoy currentBuoy = (Buoy) pairs.getKey();
-			// Modify condition so that we account a radius
-			// around the buoy.
+			// TODO Modify condition so that we account a radius around the buoy.
 			if (	this.posX == currentBuoy.getPosX() &&
 					this.posY == currentBuoy.getPosY()
 					) {
@@ -52,6 +55,8 @@ public class Racer implements IObserver {
 
 	public void setReady() {
 		this.ready = !ready;
+		// Tell Subject
+		game.updateSubject();
 	}
 	
 	public int getSteps() {
@@ -64,10 +69,10 @@ public class Racer implements IObserver {
 	
 	@Override
 	public void updateObserver() {
-		// TODO Auto-generated method stub
 		System.out.println(this.getName() + " a reçu la notification. Etat : " + this.getState() + ".");
-		// Fetch new Wind data	-> how do we do that? 
-		// Calculate new position
+		// TODO Fetch new Wind data	-> how do we do that? 
+		// TODO Calculate new position
+		addStep();
 		// Control if buoy is passed (should I do it here?)
 		this.checkBuoys();
 	}
