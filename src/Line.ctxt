@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=startX\ startY\ endX\ endY
+comment0.target=Line(int,\ int,\ int,\ int)
+comment1.params=
+comment1.target=int\ getStartX()
+comment2.params=
+comment2.target=int\ getStartY()
+comment3.params=
+comment3.target=int\ getEndX()
+comment4.params=
+comment4.target=int\ getEndY()
+comment5.params=pPosX
+comment5.target=void\ setPosX(int)
+comment6.params=pPosY
+comment6.target=void\ setPosY(int)
+numComments=7
