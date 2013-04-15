@@ -1,20 +1,25 @@
 
 public class Wind {
+	// We use constants at this stage.
+	//
+	// We may give this role to an administrator
+	// or generate them randomly at each step.
+	private final static int DIRECTION=180;
+	private final static int SPEED=8;
+	
 	//Direction du vent
 	private int direction;
 	//Vitesse du vent
 	private int speed;
 	
-	private final static int DIRECTION=180;
-	private final static int SPEED=8;
 	
 	//Contructeur par default
 	public Wind(){
-		this.direction=DIRECTION;
-		this.speed=SPEED;
+		this.direction = DIRECTION;
+		this.speed = SPEED;
 	}
 
-	//DŽclaration getters
+	//Dï¿½claration getters
 	
 	public int getDirection() {
 		return direction;
@@ -24,7 +29,7 @@ public class Wind {
 		return speed;
 	}
 	
-	//DŽclaration setters
+	//Dï¿½claration setters
 	
 	public void setDirection(int pDirection){
 		direction = pDirection;

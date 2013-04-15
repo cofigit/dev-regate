@@ -1,5 +1,8 @@
 
 public class Line {
+	// Line is used to define lines in the field
+	// We will implement a method to check if a boat
+	// has passed the line.
 	private int startX;
 	private int startY;
 	private int endX;
@@ -16,7 +19,7 @@ public class Line {
 		
 	}
 
-	//DŽclaration getters
+	//Dï¿½claration getters
 
 	public int getStartX() {
 		return startX;
@@ -35,7 +38,7 @@ public class Line {
 		return endY;
 	}
 	
-	//DŽclaration setters
+	//Dï¿½claration setters
 	
 	public void setPosX(int pPosX){
 		this.startX = pPosX;
