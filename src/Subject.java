@@ -5,40 +5,33 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class Subject {
-	private HashMap<IObserver, Boolean> m_observers;
+	private ArrayList<IObserver> m_observers;
 
 	public Subject() {
-		m_observers = new HashMap<IObserver, Boolean>();
+		m_observers = new ArrayList<IObserver>();
 	}
 	
-	void addObserver(IObserver observer, Boolean state) {
-		m_observers.put(observer, state);
+	void addObserver(IObserver observer) {
+		m_observers.add(observer);
 	}
 	
 	void removeObserver(IObserver observer) {
 		m_observers.remove(observer);	
 	}
 	
-	void updateSubject(IObserver observer, Boolean state) {
-		this.m_observers.put(observer, state);
-	}
-	
 	public void notifyObserver() {
-		Iterator it = m_observers.entrySet().iterator();
+		Iterator<IObserver> it = m_observers.iterator();
 		while ( it.hasNext() ){
-			Map.Entry pairs = (Map.Entry) it.next(); 
-			IObserver currentObserver = (IObserver) pairs.getKey();
+			IObserver currentObserver = it.next();
 			currentObserver.updateObserver();
 		}
 	}
 	
 	public void dumpAnnuaire() {
-		Iterator it = m_observers.entrySet().iterator();
+		Iterator<IObserver> it = m_observers.iterator();
 		while ( it.hasNext() ){
-			Map.Entry pairs = (Map.Entry) it.next(); 
-			IObserver currentObserver = (IObserver) pairs.getKey();
-			Boolean currentState = (Boolean) pairs.getValue();
-			System.out.println("Clé : " + currentObserver + " Valeur : " + currentState + ".");
+			IObserver currentObserver = it.next();
+			System.out.println("Clé : " + currentObserver.getName() + " Valeur : " + currentObserver.getState() + ".");
 		}		
 	}
 	

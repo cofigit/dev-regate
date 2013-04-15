@@ -1,31 +1,27 @@
 
-public class Boat implements IObserver {
-	private Boolean ready = false;
-	private String name;
-	private Game game;
+public class Boat extends Racer {
+	// Comon racer logic in class racer
+	// Boat provides saling boat logic
+	// Direction of sail and speed according to wind
+	// and angle sail / wind
+	// Provides logic to calculate new position.
+	private int cap;
+	private int speed;
+
+	public Boat(Field pField, String pName) {
+		super(pField, pName);
+	}
 	
-	public Boat(Game game, String pName) {
-		this.game = game;
-		this.name = pName;
+	public int getCap() {
+		return cap;
 	}
 
-	public void setReady() {
-		this.ready = !ready;
-		game.updateSubject(this, this.ready);
-	}
-	
-	@Override
-	public void updateObserver() {
-		// TODO Auto-generated method stub
-		System.out.println(this.name + " a reçu la notification. Etat : " + this.ready + ".");
-		// Fetch new Wind data
-		// Calculate new position
-		// Control if buoy is passed (should I do it here?)
-	}
-	
-	public Boolean getState() {
-		return this.ready;
+	public void setCap(int cap) {
+		this.cap = cap;
 	}
 
+	public int getSpeed() {
+		return speed;
+	}
 }
 
