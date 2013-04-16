@@ -71,10 +71,8 @@ public class Racer implements IObserver {
 	@Override
 	public void updateObserver() {
 		System.out.println(this.getName() + " a reçu la notification. Etat : " + this.getState() + ".");
-		// TODO Fetch new Wind data	-> how do we do that? 
 		calculateNewPosition();
 		addStep();
-		// Check if buoys are passed
 		this.checkBuoys();
 	}
 

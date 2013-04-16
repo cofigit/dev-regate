@@ -6,8 +6,12 @@ public class Game extends Subject {
 	// BlueJ.
 	Wind wind = new Wind();
 	public static void main(String[] args) {
+		// needed on mac os x
+	    System.setProperty("apple.laf.useScreenMenuBar", "true");
+	    
 		Game game = new Game();
 		Field field = new Field();
+		Canvas canvas = new Canvas(game);
 		
 		Boat boat1 = new Boat(game, field, "Bateau 1");
 		Boat boat2 = new Boat(game, field, "Bateau 2");
