@@ -12,14 +12,14 @@ import java.util.Map;
  */
 
 public class Racer implements IObserver {
-	private Game game;
+	protected Game game;
 	private Field field;
 	private HashMap <Buoy, Boolean> racerBuoyList = new HashMap<Buoy, Boolean>();
 	private Boolean ready = false;
 	private String name;
 	private int steps;
-	private int posX;
-	private int posY;
+	protected int posX;
+	protected int posY;
 	
 	public Racer ( Game pGame, Field pField, String pName ){
 		this.game = pGame;
@@ -38,15 +38,16 @@ public class Racer implements IObserver {
 	
 	public void checkBuoys() {
 		// Logic for buoy passed
-		// First iteration : iterate through all buoys
-		// Second iteration : check according to given order
+		// TODO Second iteration : check according to given order
 		Iterator it = racerBuoyList.entrySet().iterator();
 		while ( it.hasNext() ){
 			Map.Entry pairs = (Map.Entry) it.next();
 			Buoy currentBuoy = (Buoy) pairs.getKey();
-			// TODO Modify condition so that we account a radius around the buoy.
-			if (	this.posX == currentBuoy.getPosX() &&
-					this.posY == currentBuoy.getPosY()
+			// Account for a 5 pixel radius
+			if (	this.posX <= currentBuoy.getPosX() + 5 &&	// X condition
+					this.posX >= currentBuoy.getPosX() - 5 &&
+					this.posY <= currentBuoy.getPosY() + 5 &&	// Y condition
+					this.posY >= currentBuoy.getPosX() - 5 
 					) {
 				pairs.setValue(true);
 			}
@@ -71,9 +72,9 @@ public class Racer implements IObserver {
 	public void updateObserver() {
 		System.out.println(this.getName() + " a reçu la notification. Etat : " + this.getState() + ".");
 		// TODO Fetch new Wind data	-> how do we do that? 
-		// TODO Calculate new position
+		calculateNewPosition();
 		addStep();
-		// Control if buoy is passed (should I do it here?)
+		// Check if buoys are passed
 		this.checkBuoys();
 	}
 
@@ -87,4 +88,11 @@ public class Racer implements IObserver {
 		return this.name;
 	}
 
+	// TODO Calculate new position
+	// responsabilité du racer métier
+	// à surcharger en cas d'implémentation d'un nouveau
+	// type de coureur.
+	public void calculateNewPosition() {
+		// Some generic function.
+	}
 }

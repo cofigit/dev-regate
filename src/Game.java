@@ -4,11 +4,10 @@ public class Game extends Subject {
 	// people can play.
 	// On a first sprint, we may do this through
 	// BlueJ.
-	
+	Wind wind = new Wind();
 	public static void main(String[] args) {
 		Game game = new Game();
 		Field field = new Field();
-		Wind wind = new Wind();
 		
 		Boat boat1 = new Boat(game, field, "Bateau 1");
 		Boat boat2 = new Boat(game, field, "Bateau 2");

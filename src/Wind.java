@@ -5,7 +5,7 @@ public class Wind {
 	// We may give this role to an administrator
 	// or generate them randomly at each step.
 	private final static int DIRECTION=180;
-	private final static int SPEED=8;
+	private final static int SPEED=8; // not bigger than the canvas!
 	
 	//Direction du vent
 	private int direction;
@@ -19,7 +19,7 @@ public class Wind {
 		this.speed = SPEED;
 	}
 
-	//D�claration getters
+	//Déclaration getters
 	
 	public int getDirection() {
 		return direction;
@@ -29,8 +29,8 @@ public class Wind {
 		return speed;
 	}
 	
-	//D�claration setters
-	
+	//Déclaration setters
+	// TODO Generate values randomly according to boundaries set in constants
 	public void setDirection(int pDirection){
 		direction = pDirection;
 	}

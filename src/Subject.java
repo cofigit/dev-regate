@@ -29,6 +29,7 @@ public class Subject {
 			}
 		}
 		if ( allReady ) {
+			// TODO generate new wind data (here : bad)
 			notifyObserver();
 		}
 	}
@@ -41,6 +42,7 @@ public class Subject {
 		}
 	}
 	
+	// Sera supprimé plus tard
 	public void dumpAnnuaire() {
 		Iterator<IObserver> it = m_observers.iterator();
 		while ( it.hasNext() ){
