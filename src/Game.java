@@ -6,6 +6,7 @@ public class Game extends Subject {
 	// BlueJ.
 	Wind wind = new Wind();
 	Field field = new Field();
+	
 	public static void main(String[] args) {
 		// needed on mac os x
 	    System.setProperty("apple.laf.useScreenMenuBar", "true");

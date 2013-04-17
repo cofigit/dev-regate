@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.util.Iterator;
+
 import javax.swing.*;
 
 
@@ -12,51 +14,40 @@ public class RegateGraph extends JPanel {
 		int parentWidth = super.getSize().width;
 		int parentHeight = super.getSize().height;
 		System.out.println("1st try : " + parentWidth + " " + parentHeight);
-		setPreferredSize(new Dimension(600,400));
+		// TODO Fix issue : can't get parent's container's size
+		setPreferredSize(new Dimension(600,450));
+        setBackground(new java.awt.Color(100,100,255));
 		
 	}
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+		Dimension d = super.getSize();
+		int xPixel = d.width / field.getWidth();
+		int yPixel = d.height / field.getHeight();
+		
+		// Place start line and finish line
 
-		Dimension d = super.getSize();
-		int xPixel = d.width / field.getWidth();
-		int yPixel = d.height / field.getHeight();
+		g.drawLine(game.field.getStart().getStartX() * d.width / field.getWidth(),
+					game.field.getStart().getStartY() * d.height / field.getHeight(),
+					game.field.getStart().getEndX() * d.width / field.getWidth(),
+					game.field.getStart().getEndY() * d.height / field.getHeight());
 		
-		// Place start line and finish line
-		g.drawLine(game.field.getStart().getStartX() * xPixel,
-					game.field.getStart().getStartY() * yPixel,
-					game.field.getStart().getEndX() * xPixel,
-					game.field.getStart().getEndY() * yPixel);
-		g.drawLine(game.field.getFinish().getStartX() * xPixel,
-				game.field.getFinish().getStartY() * yPixel,
-				game.field.getFinish().getEndX() * xPixel,
-				game.field.getFinish().getEndY() * yPixel);
-        
-        g.drawString("blh", 20, 20);
-        g.drawRect(200, 200, 200, 200);
-    }
-	/*
-	public void paint(Graphics g){
-		Dimension d = super.getSize();
-		int xPixel = d.width / field.getWidth();
-		int yPixel = d.height / field.getHeight();
-		
-		// Place start line and finish line
-		g.drawLine(game.field.getStart().getStartX() * xPixel,
-					game.field.getStart().getStartY() * yPixel,
-					game.field.getStart().getEndX() * xPixel,
-					game.field.getStart().getEndY() * yPixel);
-		g.drawLine(game.field.getFinish().getStartX() * xPixel,
-				game.field.getFinish().getStartY() * yPixel,
-				game.field.getFinish().getEndX() * xPixel,
-				game.field.getFinish().getEndY() * yPixel);
-		
+		g.drawLine(game.field.getFinish().getStartX() * d.width / field.getWidth()-1,
+					game.field.getFinish().getStartY() * d.height / field.getHeight(),
+					game.field.getFinish().getEndX() * d.width / field.getWidth()-1,
+					game.field.getFinish().getEndY() * d.height / field.getHeight());
+
 		// Place buoys
-		// Draw one boat
+		Iterator<Buoy> it = game.field.getBuoyList().iterator();
+		while ( it.hasNext() ){
+			Buoy currentBuoy = it.next();
+			g.drawString("#", currentBuoy.getPosX() * d.width / field.getWidth()-1,
+						currentBuoy.getPosX() * d.height / field.getHeight()-1);
+		}
 		
-	}
-	*/
+		// Draw one boat
+    }
 }
 
 

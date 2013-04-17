@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
 public class Field {
-	private final static int WIDTH=100;
-	private final static int HEIGHT=100;
+	private final static int WIDTH=600;
+	private final static int HEIGHT=450;
 	private final static int NBBUOY=10;
 	
 	private Line start, finish;
@@ -49,7 +49,7 @@ public class Field {
 		// We may do this by dividing the field or by 
 		// using a hierarchy when placing the buoys (indexed
 		// array). Other algorithms welcome...
-		for (int i=0; i<=NBBUOY; i++) {
+		for (int i=0 ; i<NBBUOY ; i++) {
 			buoyPosX = 0 + (int) (Math.random() * ((WIDTH - 0) +1 ));
 			buoyPosY = 0 + (int) (Math.random() * ((HEIGHT - 0) +1 ));
 			buoy = new Buoy(buoyPosX, buoyPosY);

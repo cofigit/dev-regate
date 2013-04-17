@@ -106,12 +106,11 @@ public class Canvas extends JFrame {
 		
 		// Pack GUI
 		main.add(HUD, BorderLayout.NORTH);
-		main.add(fieldPanel, BorderLayout.WEST);
-		main.add(userInput, BorderLayout.CENTER);
+		main.add(fieldPanel, BorderLayout.CENTER);
+		main.add(userInput, BorderLayout.EAST);
 		panel.add(menubar, BorderLayout.NORTH);
 		panel.add(main, BorderLayout.CENTER);
 		
-		System.out.println("Dimension West: " + fieldPanel.getSize().width + " " + fieldPanel.getSize().height);
 		mygraph = new RegateGraph(game);
 		fieldPanel.add(mygraph);
 		
