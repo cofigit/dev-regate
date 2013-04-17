@@ -5,16 +5,16 @@ public class Game extends Subject {
 	// On a first sprint, we may do this through
 	// BlueJ.
 	Wind wind = new Wind();
+	Field field = new Field();
 	public static void main(String[] args) {
 		// needed on mac os x
 	    System.setProperty("apple.laf.useScreenMenuBar", "true");
 	    
 		Game game = new Game();
-		Field field = new Field();
 		Canvas canvas = new Canvas(game);
 		
-		Boat boat1 = new Boat(game, field, "Bateau 1");
-		Boat boat2 = new Boat(game, field, "Bateau 2");
+		Boat boat1 = new Boat(game, game.field, "Bateau 1");
+		Boat boat2 = new Boat(game, game.field, "Bateau 2");
 		
 		System.out.println("Dumping phone book.");
 		game.dumpAnnuaire();

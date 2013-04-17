@@ -13,6 +13,14 @@ public class Field {
 		defineCourse();
 	}
 	
+	public static int getWidth() {
+		return WIDTH;
+	}
+
+	public static int getHeight() {
+		return HEIGHT;
+	}
+	
 	public ArrayList<Buoy> getBuoyList() {
 		return buoyList;
 	}

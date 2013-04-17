@@ -7,13 +7,22 @@ import javax.swing.*;
 
 
 public class Canvas extends JFrame {
+	private Game game;
+	private Field field;
+	private JPanel mygraph;
 	
 	public Canvas(Game game){
+		this.game = game;
+		this.field = game.field;
 		
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel main = new JPanel(new BorderLayout());
 		Box userInput = Box.createVerticalBox();
-		
+		userInput.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+		JPanel fieldPanel = new JPanel();
+		fieldPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+		fieldPanel.setBackground(new java.awt.Color(255,255,255));
+
 		/*
 		 * HUD
 		 * ***
@@ -95,22 +104,24 @@ public class Canvas extends JFrame {
 		menubar.add(fileMenu);
 		menubar.add(settingsMenu);
 		
-		
 		// Pack GUI
 		main.add(HUD, BorderLayout.NORTH);
-		//main.add(fieldPanel, BorderLayout.CENTER);
-		main.add(userInput, BorderLayout.EAST);
+		main.add(fieldPanel, BorderLayout.WEST);
+		main.add(userInput, BorderLayout.CENTER);
 		panel.add(menubar, BorderLayout.NORTH);
 		panel.add(main, BorderLayout.CENTER);
+		
+		System.out.println("Dimension West: " + fieldPanel.getSize().width + " " + fieldPanel.getSize().height);
+		mygraph = new RegateGraph(game);
+		fieldPanel.add(mygraph);
 		
 		add(panel);
 		pack();
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		setTitle("Reygate de la mort!");
+		setTitle("Régate de la mort!");
 		setSize(800,600);
 		setVisible(true);
 	}
-
 }
