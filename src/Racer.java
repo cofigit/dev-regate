@@ -34,6 +34,7 @@ public class Racer implements IObserver {
 			Buoy currentBuoy = it.next();
 			this.racerBuoyList.put(currentBuoy, false);
 		}
+		pGame.addObserver(this);
 	}
 	
 	public void checkBuoys() {
@@ -70,6 +71,7 @@ public class Racer implements IObserver {
 	
 	@Override
 	public void updateObserver() {
+		this.ready = !ready;	// 1st round pass true, 2nd round set to false
 		System.out.println(this.getName() + " a reçu la notification. Etat : " + this.getState() + ".");
 		calculateNewPosition();
 		addStep();

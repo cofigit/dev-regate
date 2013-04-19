@@ -15,7 +15,7 @@ public class RegateGraph extends JPanel {
 		int parentHeight = super.getSize().height;
 		System.out.println("1st try : " + parentWidth + " " + parentHeight);
 		// TODO Fix issue : can't get parent's container's size
-		setPreferredSize(new Dimension(600,450));
+		setPreferredSize(new Dimension(640,515));
         setBackground(new java.awt.Color(100,100,255));
 		
 	}

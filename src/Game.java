@@ -4,13 +4,17 @@ public class Game extends Subject {
 	// people can play.
 	// On a first sprint, we may do this through
 	// BlueJ.
+	
 	Wind wind = new Wind();
 	Field field = new Field();
+	
 	
 	public static void main(String[] args) {
 		// needed on mac os x
 	    System.setProperty("apple.laf.useScreenMenuBar", "true");
-	    
+		Game game = new Game();
+		Canvas canvas = new Canvas(game);
+	    /*
 		Game game = new Game();
 		Canvas canvas = new Canvas(game);
 		
@@ -36,5 +40,6 @@ public class Game extends Subject {
 		
 		System.out.println("Dumping phonebook.");
 		game.dumpAnnuaire();
+		*/
 	}
 }

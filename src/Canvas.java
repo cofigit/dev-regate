@@ -11,9 +11,9 @@ public class Canvas extends JFrame {
 	private Field field;
 	private JPanel mygraph;
 	
-	public Canvas(Game game){
-		this.game = game;
-		this.field = game.field;
+	public Canvas(Game pGame){
+		this.game = pGame;
+		this.field = pGame.field;
 		
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel main = new JPanel(new BorderLayout());
@@ -64,24 +64,21 @@ public class Canvas extends JFrame {
 		JMenu settingsMenu = new JMenu("Configuration");
 		settingsMenu.setMnemonic(KeyEvent.VK_C);
 		
+		// TODO remove when publishing
+		/* Debug */
+		JMenu debugMenu = new JMenu("Debug");
+		JMenuItem dumpBookItem = new JMenuItem("Dump phone book");
+		dumpBookItem.addActionListener(dumpPhoneBook());
+		
 		// Démarrer nouvelle partie
 		JMenuItem startGameItem = new JMenuItem ("Démarrer partie!");
 		startGameItem.setMnemonic(KeyEvent.VK_D);
-		startGameItem.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e){
-				//game.startGame();
-			}
-		});
+		startGameItem.addActionListener(startNewGame());
 		
 		// Ajouter joueur
 		JMenuItem addPlayerItem = new JMenuItem ("Ajouter joueur...");
 		addPlayerItem.setMnemonic(KeyEvent.VK_A);
-		addPlayerItem.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0){
-				//game.subscribePlayer();
-			}
-		});
+		addPlayerItem.addActionListener(subscribePlayer());
 		
 		// Quitter
 		JMenuItem exitMenuItem = new JMenuItem("Quitter", exitIcon);
@@ -104,6 +101,10 @@ public class Canvas extends JFrame {
 		menubar.add(fileMenu);
 		menubar.add(settingsMenu);
 		
+		// TODO remove when publishing
+		debugMenu.add(dumpBookItem);
+		menubar.add(debugMenu);
+		
 		// Pack GUI
 		main.add(HUD, BorderLayout.NORTH);
 		main.add(fieldPanel, BorderLayout.CENTER);
@@ -119,8 +120,45 @@ public class Canvas extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		setTitle("Régate de la mort!");
+		setTitle("Regate virtuelle de la mort !!!");
 		setSize(800,600);
 		setVisible(true);
+		setResizable(false);
+	}
+	
+	// TODO Fix issue : can't click during game
+	private ActionListener startNewGame() {
+		ActionListener startNewGame = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e){
+				game.notifyObserver();
+			}
+		};
+		return startNewGame;
+	}
+
+	private ActionListener subscribePlayer(){
+		ActionListener subscribePlayer = new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				//game.subscribePlayer();
+				String boatName = JOptionPane.showInputDialog(null, "Saisir le nom du bateau : ", "Inscription du bateau", 1);
+				if(boatName != null) {
+					new Boat(game, field, boatName);
+					JOptionPane.showMessageDialog(null, "Le bateau " + boatName + " a été inscrit.", "Inscription du bateau", 1);
+				} else {
+					JOptionPane.showMessageDialog(null, "Inscription annulée.", "Annulation", 1);
+				}
+			}
+		};
+		return subscribePlayer;
+	}
+
+	private ActionListener dumpPhoneBook(){
+		ActionListener dumpPhoneBook = new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				game.dumpAnnuaire();
+			}
+		};
+		return dumpPhoneBook;
 	}
 }
