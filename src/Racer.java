@@ -15,12 +15,12 @@ public class Racer implements IObserver {
 	protected Game game;
 	private Field field;
 	private HashMap <Buoy, Boolean> racerBuoyList = new HashMap<Buoy, Boolean>();
-	private Boolean ready = false;
+	private Boolean ready = true;
 	private String name;
 	private int steps;
-	protected int posX;
-	protected int posY;
-	
+	private int posX;
+	private int posY;
+
 	public Racer ( Game pGame, Field pField, String pName ){
 		this.game = pGame;
 		this.field = pField;
@@ -44,13 +44,14 @@ public class Racer implements IObserver {
 		while ( it.hasNext() ){
 			Map.Entry pairs = (Map.Entry) it.next();
 			Buoy currentBuoy = (Buoy) pairs.getKey();
-			// Account for a 5 pixel radius
-			if (	this.posX <= currentBuoy.getPosX() + 5 &&	// X condition
-					this.posX >= currentBuoy.getPosX() - 5 &&
-					this.posY <= currentBuoy.getPosY() + 5 &&	// Y condition
-					this.posY >= currentBuoy.getPosX() - 5 
+			// Account for a 50 pixel radius
+			if (	this.posX <= currentBuoy.getPosX() + 50 &&	// X condition
+					this.posX >= currentBuoy.getPosX() - 50 &&
+					this.posY <= currentBuoy.getPosY() + 50 &&	// Y condition
+					this.posY >= currentBuoy.getPosX() - 50 
 					) {
 				pairs.setValue(true);
+				System.out.println("PASSED BUOY!");
 			}
 		}
 	}
@@ -71,11 +72,15 @@ public class Racer implements IObserver {
 	
 	@Override
 	public void updateObserver() {
-		this.ready = !ready;	// 1st round pass true, 2nd round set to false
-		System.out.println(this.getName() + " a reçu la notification. Etat : " + this.getState() + ".");
+		this.ready = !ready;
+		// TODO Remove this debug part
+		System.out.println(this.getName() + " a reçu la notification. Etat : " + this.getState() +
+				" posX : " + getPosX() + 
+				" posY : " + getPosY() +
+				" Steps : " + getSteps() + ".");
 		calculateNewPosition();
 		addStep();
-		this.checkBuoys();
+		checkBuoys();
 	}
 
 	@Override
@@ -88,11 +93,30 @@ public class Racer implements IObserver {
 		return this.name;
 	}
 
-	// TODO Calculate new position
 	// responsabilité du racer métier
 	// à surcharger en cas d'implémentation d'un nouveau
 	// type de coureur.
 	public void calculateNewPosition() {
 		// Some generic function.
+		System.out.println("Not using correct object's method");	// Replace with exception
+	}
+	
+	public String toString() { return this.name; }
+	
+
+	public int getPosX() {
+		return posX;
+	}
+
+	public void setPosX(int posX) {
+		this.posX = posX;
+	}
+
+	public int getPosY() {
+		return posY;
+	}
+
+	public void setPosY(int posY) {
+		this.posY = posY;
 	}
 }

@@ -42,12 +42,16 @@ public class Subject {
 		}
 	}
 	
+	public ArrayList<IObserver> getObservers(){
+		return m_observers;
+	}
+	
 	// Sera supprimé plus tard
 	public void dumpAnnuaire() {
 		Iterator<IObserver> it = m_observers.iterator();
 		while ( it.hasNext() ){
 			IObserver currentObserver = it.next();
-			System.out.println("Clé : " + currentObserver.getName() + " Valeur : " + currentObserver.getState() + ".");
+			System.out.println("Clé : " + currentObserver + " Valeur : " + currentObserver.getState() + ".");
 		}		
 	}
 	

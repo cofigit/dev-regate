@@ -1,19 +1,47 @@
-
+/*
+ * 1st working version.
+ * Many implementation inaccuracies.
+ * Model works.
+ * Still have to implement end of race.
+ */
 public class Game extends Subject {
-	// We need to implement an interface so that
-	// people can play.
-	// On a first sprint, we may do this through
-	// BlueJ.
+	private Boolean gameStarted;
+	private Wind wind;
+	private Field field;
+	private Canvas canvas;
 	
-	Wind wind = new Wind();
-	Field field = new Field();
+	public Game() {
+		gameStarted = false;
+		wind = new Wind();
+		field = new Field();
+		canvas = new Canvas(this);
+	}
 	
-	
+	public Boolean getGameStarted() {
+		return gameStarted;
+	}
+
+	public void setGameStarted() {
+		this.gameStarted = !gameStarted;
+	}
+
+	public Wind getWind() {
+		return wind;
+	}
+
+	public Canvas getCanvas() {
+		return canvas;
+	}
+
+	public Field getField() {
+		return field;
+	}
+
 	public static void main(String[] args) {
 		// needed on mac os x
 	    System.setProperty("apple.laf.useScreenMenuBar", "true");
 		Game game = new Game();
-		Canvas canvas = new Canvas(game);
+		
 	    /*
 		Game game = new Game();
 		Canvas canvas = new Canvas(game);

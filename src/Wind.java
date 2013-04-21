@@ -4,13 +4,13 @@ public class Wind {
 	//
 	// We may give this role to an administrator
 	// or generate them randomly at each step.
-	private final static int DIRECTION=180;
-	private final static int SPEED=8; // not bigger than the canvas!
+	private final static double DIRECTION=180.0;
+	private final static double SPEED=20.5; // not bigger than the canvas!
 	
 	//Direction du vent
-	private int direction;
+	private double direction;
 	//Vitesse du vent
-	private int speed;
+	private double speed;
 	
 	
 	//Contructeur par default
@@ -21,21 +21,21 @@ public class Wind {
 
 	//Déclaration getters
 	
-	public int getDirection() {
+	public double getDirection() {
 		return direction;
 	}
 	
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 	
 	//Déclaration setters
 	// TODO Generate values randomly according to boundaries set in constants
-	public void setDirection(int pDirection){
+	public void setDirection(double pDirection){
 		direction = pDirection;
 	}
 	
-	public void setSpeed(int pSpeed) {
+	public void setSpeed(double pSpeed) {
 		speed = pSpeed;
 	}
 	

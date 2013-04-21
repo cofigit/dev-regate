@@ -2,6 +2,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.Iterator;
 
 import javax.swing.*;
 
@@ -9,12 +12,23 @@ import javax.swing.*;
 public class Canvas extends JFrame {
 	private Game game;
 	private Field field;
-	private JPanel mygraph;
+	private JPanel regateGraph;
+	private JTextField newCap = new JTextField(3);
+	private Boat currentBoat;
+	private JComboBox boatComboBox;
+	private JLabel infoCurrentSpeed = new JLabel("0 knots");
+	private JLabel infoCurrentCap = new JLabel("0 deg");
+	private JMenuItem startGameItem = new JMenuItem ("Démarrer partie!");
+	private JMenuItem addPlayerItem = new JMenuItem ("Ajouter joueur...");
+	private JButton submitButton = new JButton("Valider");
+	private JTextField HUD = new JTextField();
 	
 	public Canvas(Game pGame){
 		this.game = pGame;
-		this.field = pGame.field;
-		
+		this.field = pGame.getField();
+		boatComboBox = new JComboBox();
+		boatComboBox.addActionListener(getSelectedBoat());
+		boatComboBox.setForeground(Color.blue);
 		JPanel panel = new JPanel(new BorderLayout());
 		JPanel main = new JPanel(new BorderLayout());
 		Box userInput = Box.createVerticalBox();
@@ -27,30 +41,30 @@ public class Canvas extends JFrame {
 		 * HUD
 		 * ***
 		 */
-		JTextField HUD = new JTextField();
-		HUD.setText("This is the HUD. You'll get all sorts of useful information here!");
+		HUD.setText("Wind direction : " + game.getWind().getDirection() +
+					" Wind speed : " + game.getWind().getSpeed());
 		HUD.setEditable(false);
 		
 		/*
 		 * USER INPUT FORM
 		 */
-		
+		userInput.add(boatComboBox);
 		JPanel infoSpeed = new JPanel(new BorderLayout());
 		infoSpeed.add(new JLabel("Vitesse : "),BorderLayout.CENTER);
-		JLabel infoCurrentSpeed = new JLabel("xy knots");
 		infoSpeed.add(infoCurrentSpeed,BorderLayout.EAST);
 		userInput.add(infoSpeed);
 		
 		JPanel infoCap = new JPanel(new BorderLayout());
 		infoCap.add(new JLabel("Cap actuel : "),BorderLayout.CENTER);
-		JLabel infoCurrentCap = new JLabel("xy deg");
 		infoCap.add(infoCurrentCap,BorderLayout.EAST);
 		userInput.add(infoCap);
 		
 		JPanel setCap = new JPanel(new BorderLayout());
 		setCap.add(new JLabel("Nouveau cap : "),BorderLayout.CENTER);
-		setCap.add(new JTextField(3),BorderLayout.EAST);
-		setCap.add(new JButton("Valider"),BorderLayout.SOUTH);
+		setCap.add(newCap,BorderLayout.EAST);
+		setCap.add(submitButton,BorderLayout.SOUTH);
+		submitButton.setEnabled(false);
+		submitButton.addActionListener(submitActionListener());
 		userInput.add(setCap);
 		
 		/*
@@ -64,19 +78,12 @@ public class Canvas extends JFrame {
 		JMenu settingsMenu = new JMenu("Configuration");
 		settingsMenu.setMnemonic(KeyEvent.VK_C);
 		
-		// TODO remove when publishing
-		/* Debug */
-		JMenu debugMenu = new JMenu("Debug");
-		JMenuItem dumpBookItem = new JMenuItem("Dump phone book");
-		dumpBookItem.addActionListener(dumpPhoneBook());
-		
 		// Démarrer nouvelle partie
-		JMenuItem startGameItem = new JMenuItem ("Démarrer partie!");
 		startGameItem.setMnemonic(KeyEvent.VK_D);
 		startGameItem.addActionListener(startNewGame());
 		
 		// Ajouter joueur
-		JMenuItem addPlayerItem = new JMenuItem ("Ajouter joueur...");
+		addPlayerItem.setEnabled(true);
 		addPlayerItem.setMnemonic(KeyEvent.VK_A);
 		addPlayerItem.addActionListener(subscribePlayer());
 		
@@ -102,6 +109,13 @@ public class Canvas extends JFrame {
 		menubar.add(settingsMenu);
 		
 		// TODO remove when publishing
+		/* Debug */
+		JMenu debugMenu = new JMenu("Debug");
+		JMenuItem dumpBookItem = new JMenuItem("Dump phone book");
+		dumpBookItem.addActionListener(dumpPhoneBook());
+		JMenuItem dumpCurrentBoatItem = new JMenuItem("Dump current boat");
+		dumpCurrentBoatItem.addActionListener(dumpCurrentBoatItem());
+		debugMenu.add(dumpCurrentBoatItem);
 		debugMenu.add(dumpBookItem);
 		menubar.add(debugMenu);
 		
@@ -112,8 +126,8 @@ public class Canvas extends JFrame {
 		panel.add(menubar, BorderLayout.NORTH);
 		panel.add(main, BorderLayout.CENTER);
 		
-		mygraph = new RegateGraph(game);
-		fieldPanel.add(mygraph);
+		regateGraph = new RegateGraph(game);
+		fieldPanel.add(regateGraph);
 		
 		add(panel);
 		pack();
@@ -121,16 +135,56 @@ public class Canvas extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setTitle("Regate virtuelle de la mort !!!");
-		setSize(800,600);
+		setSize(850,600);
 		setVisible(true);
 		setResizable(false);
 	}
 	
+	private ActionListener getSelectedBoat() {
+		ActionListener getSelectedBoat = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				currentBoat = (Boat) boatComboBox.getSelectedItem();
+				//int speed = currentBoat.getSpeed();
+				infoCurrentSpeed.setText("x" + " knots");
+				infoCurrentCap.setText("y" +" deg");
+			}
+		};
+		return getSelectedBoat;
+	}
+
+	private void loadComboBox() {
+		boatComboBox.removeAllItems();
+		Iterator<IObserver> it = game.getObservers().iterator();
+		while ( it.hasNext()){
+			boatComboBox.addItem(it.next());
+		}
+	}
+
+	private ActionListener submitActionListener() {
+		ActionListener submitActionListener = new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//Fetch new cap
+				String newCapString = newCap.getText();
+				// Update boat
+				currentBoat.setCap(Integer.parseInt(newCapString));
+				currentBoat.setReady();
+			}		
+		};
+		return submitActionListener;
+	}
+
 	// TODO Fix issue : can't click during game
 	private ActionListener startNewGame() {
 		ActionListener startNewGame = new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
+				// TODO Refactor by creating private method changeGameState()
+				submitButton.setEnabled(true);
+				addPlayerItem.setEnabled(false);
+				startGameItem.setEnabled(false);
+				game.setGameStarted();
 				game.notifyObserver();
 			}
 		};
@@ -140,10 +194,10 @@ public class Canvas extends JFrame {
 	private ActionListener subscribePlayer(){
 		ActionListener subscribePlayer = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
-				//game.subscribePlayer();
 				String boatName = JOptionPane.showInputDialog(null, "Saisir le nom du bateau : ", "Inscription du bateau", 1);
 				if(boatName != null) {
 					new Boat(game, field, boatName);
+					loadComboBox();
 					JOptionPane.showMessageDialog(null, "Le bateau " + boatName + " a été inscrit.", "Inscription du bateau", 1);
 				} else {
 					JOptionPane.showMessageDialog(null, "Inscription annulée.", "Annulation", 1);
@@ -153,6 +207,16 @@ public class Canvas extends JFrame {
 		return subscribePlayer;
 	}
 
+	private ActionListener dumpCurrentBoatItem() {
+		ActionListener dumpCurrentBoatItem = new ActionListener(){
+			public void actionPerformed(ActionEvent arg0){
+				System.out.println(currentBoat + " has speed of " + currentBoat.getSpeed() + ", cap of " + currentBoat.getCap() +
+						", posX : " + currentBoat.getPosX() + ", posY : " + currentBoat.getPosY() + ".");
+			}
+		};
+		return dumpCurrentBoatItem;
+	}
+
 	private ActionListener dumpPhoneBook(){
 		ActionListener dumpPhoneBook = new ActionListener(){
 			public void actionPerformed(ActionEvent arg0){
@@ -160,5 +224,9 @@ public class Canvas extends JFrame {
 			}
 		};
 		return dumpPhoneBook;
+	}
+
+	public void drawBoat() {
+		regateGraph.repaint();
 	}
 }

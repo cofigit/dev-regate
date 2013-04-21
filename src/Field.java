@@ -35,7 +35,7 @@ public class Field {
 		
 	//Procedure definition parcours
 	public void defineCourse() {
-		//Placer aleatoirement X bou�e
+		//Placer aleatoirement X bouée
 		int buoyPosX;
 		int buoyPosY;
 		Buoy buoy;

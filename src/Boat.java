@@ -5,15 +5,18 @@ public class Boat extends Racer {
 	// Direction of sail and speed according to wind
 	// and angle sail / wind
 	// Provides logic to calculate new position.
-	private int cap;
-	private int speed;
-	private int direction;
+	private double cap;
+	private double speed;
+	private double direction;
 
 	public Boat(Game pGame, Field pField, String pName) {
 		super(pGame, pField, pName);
+		this.cap = 0;
+		this.speed = 0;
+		this.direction = 0;
 	}
 	
-	public int getCap() {
+	public double getCap() {
 		return cap;
 	}
 
@@ -25,37 +28,41 @@ public class Boat extends Racer {
 		}
 	}
 
-	public int getSpeed() {
+	public double getSpeed() {
 		return speed;
 	}
 
 	@Override
 	public void calculateNewPosition() {
-		// TODO Auto-generated method stub
-			int windDirection = super.game.wind.getDirection();
-			int windSpeed = super.game.wind.getSpeed();
-			if ( this.cap > 30 && this.cap < (360-30)) {
-				// Algorithm
-				// Wind speed X (calculation on angles)
-				// 	speed = wind speed if (calculation on angles == 1)
-				//	speed = wind speed * (sin 90) <= angle avec le vent
-				// 	boat direction = parallel to wind if sin(angles difference) = 1
-				this.speed = (int) (windSpeed * Math.sin(	Math.toRadians(windDirection-this.cap)	));
-				this.direction = (int) (Math.toRadians(windDirection) * Math.sin(	Math.toRadians(windDirection-this.cap) ));
-				
-				// Calculation of new place
-				// Basic algorithm : windSpeed shows pixel displacement
-				//		this.direction shows the angle of displacement
-				//		we use trigonometry to project relative displacement
-				//		on X and Y axis.
-				super.posX = (int) (this.speed * Math.cos(this.direction));
-				super.posY = (int) (this.speed * Math.sin(this.direction));
-				
-			} else {
-				this.speed = 0;
-				this.direction = 0;
-			}
+		double windDirection = super.game.getWind().getDirection();
+		double windSpeed = super.game.getWind().getSpeed();
+		System.out.println("wind direction : " + windDirection + " wind speed : " + windSpeed);
+		//if ( (windDirection - this.cap) > 30 && (windDirection - this.cap) < (360-30)) {
+		if (true ) {
+			// Algorithm
+			// Wind speed X (calculation on angles)
+			// 	speed = wind speed if (calculation on angles == 1)
+			//	speed = wind speed * (sin 90) <= angle avec le vent
+			// 	boat direction = parallel to wind if sin(angles difference) = 1
+			System.out.println("entered calculation algorithm");
+			this.speed = (double) ( (double)windSpeed * Math.sin(	Math.toRadians((double)windDirection-(double)this.cap)	));
+			this.direction = (double) (Math.toRadians((double)windDirection) * Math.sin(	Math.toRadians((double)windDirection-(double)this.cap) ));
+			
+			
+			// Calculation of new place
+			// Basic algorithm : windSpeed shows pixel displacement
+			//		this.direction shows the angle of displacement
+			//		we use trigonometry to project relative displacement
+			//		on X and Y axis.
+			setPosX(getPosX() + (int) ((double)this.speed * Math.cos((double)this.direction)));
+			setPosY(getPosY() + (int) ((double)this.speed * Math.sin((double)this.direction)));
+			this.direction = (double) Math.toDegrees(this.direction);
+			game.getCanvas().drawBoat();
+			
+		} else {
+			this.speed = 0;
+			this.direction = 0;
+		}
 	}
-	
 }
 
