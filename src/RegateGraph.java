@@ -13,7 +13,6 @@ public class RegateGraph extends JPanel {
 		this.field = game.getField();
 		int parentWidth = super.getSize().width;
 		int parentHeight = super.getSize().height;
-		// TODO Fix issue : can't get parent's container's size
 		setPreferredSize(new Dimension(640,515));
         setBackground(new java.awt.Color(200,200,255));
 		
@@ -39,19 +38,29 @@ public class RegateGraph extends JPanel {
 
 		// Place buoys
 		Iterator<Buoy> itBuoy = game.getField().getBuoyList().iterator();
+
+    	Graphics2D g2d = (Graphics2D) g;
 		while ( itBuoy.hasNext() ){
 			Buoy currentBuoy = itBuoy.next();
-			g.drawString("#", currentBuoy.getPosX() * d.width / field.getWidth()-1,
-						currentBuoy.getPosY() * d.height / field.getHeight()-1);
+	    	ImageIcon buoySprite = new ImageIcon (getClass().getResource("icons/Move.png"),""+currentBuoy.getBuoyNumber());
+	    	Image buoyImage = buoySprite.getImage();
+	    	g2d.drawImage(buoyImage,
+	    			currentBuoy.getPosX() * d.width / field.getWidth(),
+					currentBuoy.getPosY() * d.height / field.getHeight(),
+	    			this);
 		}
 		
 		// Draw boats
 		Iterator<IObserver> itBoat = game.getObservers().iterator();
 		while ( itBoat.hasNext() ){
 			Boat currentBoat = (Boat) itBoat.next();
-	    	g.drawString("V",
-	    			currentBoat.getPosX() * d.width / field.getWidth()-1 +10,
-	    			currentBoat.getPosY() * d.height / field.getHeight()-1+10);
+	    	ImageIcon boatSprite = new ImageIcon (getClass().getResource("icons/Boat.png"),currentBoat.getName());
+	    	Image boatImage = boatSprite.getImage();
+	    	g2d.drawImage(boatImage,
+	    			currentBoat.getPosX() * d.width / field.getWidth(),
+	    			currentBoat.getPosY() * d.height / field.getHeight(),
+	    			this);
+	    	
 		}
     	repaint();
     }

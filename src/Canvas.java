@@ -18,8 +18,10 @@ public class Canvas extends JFrame {
 	private JComboBox boatComboBox;
 	private JLabel infoCurrentSpeed = new JLabel("0 knots");
 	private JLabel infoCurrentCap = new JLabel("0 deg");
-	private JMenuItem startGameItem = new JMenuItem ("Démarrer partie!");
-	private JMenuItem addPlayerItem = new JMenuItem ("Ajouter joueur...");
+	ImageIcon startIcon = new ImageIcon(getClass().getResource("icons/Update.png"));
+	private JMenuItem startGameItem = new JMenuItem ("Démarrer partie!",startIcon);
+	ImageIcon addPlayerIcon = new ImageIcon(getClass().getResource("icons/Plus.png"));
+	private JMenuItem addPlayerItem = new JMenuItem("Ajouter joueur",addPlayerIcon);
 	private JButton submitButton = new JButton("Valider");
 	private JTextField HUD = new JTextField();
 	
@@ -41,8 +43,8 @@ public class Canvas extends JFrame {
 		 * HUD
 		 * ***
 		 */
-		HUD.setText("Wind direction : " + game.getWind().getDirection() +
-					" Wind speed : " + game.getWind().getSpeed());
+		HUD.setText("Wind direction : " + (int)game.getWind().getDirection() +
+					" Wind speed : " + (int)game.getWind().getSpeed());
 		HUD.setEditable(false);
 		
 		/*
@@ -72,6 +74,7 @@ public class Canvas extends JFrame {
 		 *  ****
 		 */
 		ImageIcon exitIcon = new ImageIcon(getClass().getResource("icons/Close.png"));
+
 		JMenuBar menubar = new JMenuBar();
 		JMenu fileMenu = new JMenu("Fichier");
 		fileMenu.setMnemonic(KeyEvent.VK_F);
@@ -97,16 +100,11 @@ public class Canvas extends JFrame {
 			}
 		});
 		
-		// Settings
-		JMenuItem fieldSizeItem = new JMenuItem("Taille de la régate.");
-		JMenuItem generateRandomlyItem = new JMenuItem("Placer les bouées.");
-		settingsMenu.add(fieldSizeItem);
-		settingsMenu.add(generateRandomlyItem);
+		// Pack menu
 		fileMenu.add(startGameItem);
 		fileMenu.add(addPlayerItem);
 		fileMenu.add(exitMenuItem);
 		menubar.add(fileMenu);
-		menubar.add(settingsMenu);
 		
 		// TODO remove when publishing
 		/* Debug */
@@ -134,20 +132,21 @@ public class Canvas extends JFrame {
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
-		setTitle("Regate virtuelle de la mort !!!");
+		setTitle("Régate virtuelle");
 		setSize(850,600);
 		setVisible(true);
 		setResizable(false);
 	}
-	
+
 	private ActionListener getSelectedBoat() {
 		ActionListener getSelectedBoat = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				currentBoat = (Boat) boatComboBox.getSelectedItem();
-				//int speed = currentBoat.getSpeed();
-				infoCurrentSpeed.setText("x" + " knots");
-				infoCurrentCap.setText("y" +" deg");
+				//TODO Fix issue : problem when getting boat info.
+				//infoCurrentSpeed.setText(""+currentBoat.getSpeed() + " knots");
+				//infoCurrentCap.setText(""+currentBoat.getCap() + " deg");
+				submitButton.setEnabled(true);
 			}
 		};
 		return getSelectedBoat;
@@ -170,12 +169,12 @@ public class Canvas extends JFrame {
 				// Update boat
 				currentBoat.setCap(Integer.parseInt(newCapString));
 				currentBoat.setReady();
+				submitButton.setEnabled(false);
 			}		
 		};
 		return submitActionListener;
 	}
 
-	// TODO Fix issue : can't click during game
 	private ActionListener startNewGame() {
 		ActionListener startNewGame = new ActionListener(){
 			@Override
@@ -198,6 +197,7 @@ public class Canvas extends JFrame {
 				if(boatName != null) {
 					new Boat(game, field, boatName);
 					loadComboBox();
+					submitButton.setEnabled(false);
 					JOptionPane.showMessageDialog(null, "Le bateau " + boatName + " a été inscrit.", "Inscription du bateau", 1);
 				} else {
 					JOptionPane.showMessageDialog(null, "Inscription annulée.", "Annulation", 1);
@@ -228,5 +228,10 @@ public class Canvas extends JFrame {
 
 	public void drawBoat() {
 		regateGraph.repaint();
+	}
+
+	public void updateCanvas() {
+		HUD.setText("Wind direction : " + (int)game.getWind().getDirection() +
+				" Wind speed : " + (int)game.getWind().getSpeed());
 	}
 }

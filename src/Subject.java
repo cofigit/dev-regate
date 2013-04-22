@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,21 +20,6 @@ public class Subject {
 		m_observers.remove(observer);	
 	}
 	
-	public void updateSubject() {
-		Boolean allReady = true;
-		Iterator<IObserver> it = m_observers.iterator();
-		while ( it.hasNext() ){
-			IObserver currentObserver = it.next();
-			if ( currentObserver.getState() != true ) {
-				allReady = false;
-			}
-		}
-		if ( allReady ) {
-			// TODO generate new wind data (here : bad)
-			notifyObserver();
-		}
-	}
-	
 	public void notifyObserver() {
 		Iterator<IObserver> it = m_observers.iterator();
 		while ( it.hasNext() ){
@@ -42,11 +28,10 @@ public class Subject {
 		}
 	}
 	
-	public ArrayList<IObserver> getObservers(){
+	protected ArrayList<IObserver> getObservers(){
 		return m_observers;
 	}
 	
-	// Sera supprimé plus tard
 	public void dumpAnnuaire() {
 		Iterator<IObserver> it = m_observers.iterator();
 		while ( it.hasNext() ){
@@ -54,5 +39,4 @@ public class Subject {
 			System.out.println("Clé : " + currentObserver + " Valeur : " + currentObserver.getState() + ".");
 		}		
 	}
-	
 }

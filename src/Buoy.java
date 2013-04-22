@@ -2,16 +2,18 @@
 public class Buoy {
 	private int posX;
 	private int posY;
+	int buoyNumber;
 	
 	
 	//Contructeur par default
 	
-	public Buoy(int posX, int posY) {
+	public Buoy(int posX, int posY, int buoyNumber) {
 		this.posX = posX;
 		this.posY = posY;
+		this.buoyNumber = buoyNumber;
 	}
 	
-	//DŽclaration getters
+	//DÃ©claration getters
 	
 	public int getPosX() {
 		return posX;
@@ -22,7 +24,7 @@ public class Buoy {
 		return posY;
 	}
 	
-	//DŽclaration setters
+	//DÃ©claration setters
 	
 	public void setPosX(int pPosX){
 		this.posX = pPosX;
@@ -30,6 +32,10 @@ public class Buoy {
 	
 	public void setPosY(int pPosY) {
 		this.posY = pPosY;
+	}
+
+	public int getBuoyNumber() {
+		return this.buoyNumber;
 	}
 
 }

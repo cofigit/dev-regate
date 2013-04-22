@@ -12,19 +12,26 @@ import java.util.Map;
  */
 
 public class Racer implements IObserver {
+	private static final int MARGIN = 100;
 	protected Game game;
 	private Field field;
 	private HashMap <Buoy, Boolean> racerBuoyList = new HashMap<Buoy, Boolean>();
 	private Boolean ready = true;
 	private String name;
 	private int steps;
+	private int classement;
+
 	private int posX;
 	private int posY;
+	private Boolean raceFinished;
+	private Boolean allBuoysPassed;
 
 	public Racer ( Game pGame, Field pField, String pName ){
 		this.game = pGame;
 		this.field = pField;
 		this.name = pName;
+		this.raceFinished = false;
+		this.allBuoysPassed = false;
 		this.posX = field.getStart().getStartX();
 		// TODO Check next position available
 		this.posY = field.getStart().getStartY();
@@ -37,23 +44,41 @@ public class Racer implements IObserver {
 		pGame.addObserver(this);
 	}
 	
-	public void checkBuoys() {
+	public Boolean checkBuoys() {
 		// Logic for buoy passed
 		// TODO Second iteration : check according to given order
+		Boolean allBuoysPassed = true;
 		Iterator it = racerBuoyList.entrySet().iterator();
 		while ( it.hasNext() ){
 			Map.Entry pairs = (Map.Entry) it.next();
 			Buoy currentBuoy = (Buoy) pairs.getKey();
-			// Account for a 50 pixel radius
-			if (	this.posX <= currentBuoy.getPosX() + 50 &&	// X condition
-					this.posX >= currentBuoy.getPosX() - 50 &&
-					this.posY <= currentBuoy.getPosY() + 50 &&	// Y condition
-					this.posY >= currentBuoy.getPosX() - 50 
+			// Account for a MARGIN pixel radius
+			if (	this.posX <= currentBuoy.getPosX() + MARGIN &&	// X condition
+					this.posX >= currentBuoy.getPosX() - MARGIN &&
+					this.posY <= currentBuoy.getPosY() + MARGIN &&	// Y condition
+					this.posY >= currentBuoy.getPosX() - MARGIN 
 					) {
 				pairs.setValue(true);
-				System.out.println("PASSED BUOY!");
+				//TODO remove when publishing
+				System.out.println("Passed buoy!");
+			}
+			if ((Boolean) pairs.getValue() == false) {
+				allBuoysPassed = false;
 			}
 		}
+		if ( allBuoysPassed ) { // check end line passed
+			// We assume race goes from left to right.
+			if (	this.posX >= game.getField().getFinish().getStartX() &&
+					this.posY >= game.getField().getFinish().getStartY() &&	
+					this.posX >= game.getField().getFinish().getEndX() &&
+					this.posY <= game.getField().getFinish().getEndY()
+					) {
+				raceFinished = true;
+				//TODO remove when publishing
+				System.out.println("Finished race!");
+			}
+		}
+		return allBuoysPassed;
 	}
 
 	public void setReady() {
@@ -72,19 +97,21 @@ public class Racer implements IObserver {
 	
 	@Override
 	public void updateObserver() {
-		this.ready = !ready;
-		// TODO Remove this debug part
-		System.out.println(this.getName() + " a reçu la notification. Etat : " + this.getState() +
-				" posX : " + getPosX() + 
-				" posY : " + getPosY() +
-				" Steps : " + getSteps() + ".");
-		calculateNewPosition();
-		addStep();
-		checkBuoys();
+		if ( !raceFinished || !allBuoysPassed) {
+			this.ready = !ready;
+			calculateNewPosition();
+			addStep();
+			allBuoysPassed = checkBuoys();
+			// TODO Remove this debug part
+			System.out.println(this.getName() + " a reçu la notification. Etat : " + this.getState() +
+					", posX : " + getPosX() + 
+					", posY : " + getPosY() +
+					", Steps : " + getSteps() + ".");
+		}
 	}
 
 	@Override
-	public Boolean getState() {
+	public boolean getState() {
 		return this.ready;
 	}
 	
@@ -118,5 +145,17 @@ public class Racer implements IObserver {
 
 	public void setPosY(int posY) {
 		this.posY = posY;
+	}
+	public int getClassement() {
+		return classement;
+	}
+
+	public void setClassement(int classement) {
+		this.classement = classement;
+	}
+
+	@Override
+	public boolean getRaceFinished() {
+		return raceFinished;
 	}
 }

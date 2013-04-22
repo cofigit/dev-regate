@@ -38,7 +38,7 @@ public class Boat extends Racer {
 		double windSpeed = super.game.getWind().getSpeed();
 		System.out.println("wind direction : " + windDirection + " wind speed : " + windSpeed);
 		//if ( (windDirection - this.cap) > 30 && (windDirection - this.cap) < (360-30)) {
-		if (true ) {
+		if (true ) { // condition on cap and wind direction difference > 30
 			// Algorithm
 			// Wind speed X (calculation on angles)
 			// 	speed = wind speed if (calculation on angles == 1)

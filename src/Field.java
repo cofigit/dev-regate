@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 public class Field {
-	private final static int WIDTH=600;
-	private final static int HEIGHT=450;
-	private final static int NBBUOY=10;
+	private final static int WIDTH=450;
+	private final static int HEIGHT=300;
+	private final static int NBBUOY=1;
 	
 	private Line start, finish;
 
@@ -52,7 +52,7 @@ public class Field {
 		for (int i=0 ; i<NBBUOY ; i++) {
 			buoyPosX = 0 + (int) (Math.random() * ((WIDTH - 0) +1 ));
 			buoyPosY = 0 + (int) (Math.random() * ((HEIGHT - 0) +1 ));
-			buoy = new Buoy(buoyPosX, buoyPosY);
+			buoy = new Buoy(buoyPosX, buoyPosY,i+1);
 			this.buoyList.add(buoy);
 		}
 	}
